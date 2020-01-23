@@ -39,6 +39,7 @@ spec:
               mountPath: /data
             {{- end }}
           env:
+          {{- if .Values.mariadb.enabled }}
           - name: MATOMO_DATABASE_TABLES_PREFIX
             value: matomo_
           - name: MATOMO_INDEX
@@ -65,6 +66,7 @@ spec:
             value: matomo
           - name: MATOMO_TIMEZONE
             value: America/New_York
+          {{- end }}
           # # - name: MYSQL_ROOT_PASSWORD
           #   value: {{ .Values.mariadb.rootPassword }}
           ports:
