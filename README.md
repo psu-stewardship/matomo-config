@@ -1,12 +1,16 @@
+
 export NAME=matomo
+
 
 # new chart 
 helm init ${NAME}
 
+
 # template out the chart
 helm template ${NAME} . 
 
-# Apply the template into your namespace
+
+# apply the template into your namespace
 helm template matomo . | kubectl apply -f - 
 
 
@@ -20,8 +24,8 @@ kubectl exec -it $pod_id /bin/bash
 stern matomo # recommended
 kubectl logs $pod_id
 # both of these commands have a -f (follow) option
-
 ```
+
 
 # discovery
 ```
@@ -38,6 +42,7 @@ example:
 kubectl port-forward matomo-mariadb-0 3306:3306  # forward 3306 on mariadb
 ```
 
+
 # start from scratch
 ```
 helm template matomo . | kubectl delete -f -
@@ -47,9 +52,6 @@ kubectl get statefulset
 kubectl delete pvc data-matomo-mariadb-0
 ```
 
-kubectl port-forward {{ pod }} 3306:3306
-
-
 
 # TODO 
 [] put plugins and data into a pvc (mounted at /data)
@@ -58,7 +60,7 @@ kubectl port-forward {{ pod }} 3306:3306
 [] simplify entrypoint script, add error logging
 
 
-
 # References
 inspiration from the official matomo docker, and crazy-max
 https://github.com/crazy-max/docker-matomo/tree/master/examples/kubernetes
+
