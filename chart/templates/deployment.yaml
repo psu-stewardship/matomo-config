@@ -21,21 +21,32 @@ spec:
       serviceAccountName: {{ include "matomo.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: matomo-data
+          persistentVolumeClaim:
+            claimName: {{ include "matomo.fullname" . }}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: matomo-data
+              mountPath: /data
+            {{- end }}
           env:
-          - name: MATOMO_TABLES_PREFIX
+          - name: MATOMO_DATABASE_TABLES_PREFIX
             value: matomo_
           - name: MATOMO_INDEX
             value: http://localhost/index.php
           - name: MATOMO_DATABASE_TYPE
             value: InnoDB
           - name: MATOMO_DATABASE_ADAPTER
-            value: pdomysql
+            value: 'PDO\MYSQL'
           - name: MATOMO_DATABASE_USERNAME
             value: {{ .Values.mariadb.user }}
           - name: MATOMO_DATABASE_DBNAME

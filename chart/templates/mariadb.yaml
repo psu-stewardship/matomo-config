@@ -27,14 +27,14 @@ spec:
           image: "{{ .Values.mariadb.image }}:{{ .Values.mariadb.imageTag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: MYSQL_USER
-            value: {{ .Values.mariadb.user }}
-          - name: MYSQL_DATABASE
-            value: {{ .Values.mariadb.name }}
-          - name: MYSQL_PASSWORD
-            value: {{ .Values.mariadb.password }}
-          - name: MYSQL_ROOT_PASSWORD
-            value: {{ .Values.mariadb.rootPassword }}
+            - name: MYSQL_USER
+              value: {{ .Values.mariadb.user }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.mariadb.name }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mariadb.password }}
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mariadb.rootPassword }}
           ports:
             - name: mysql
               containerPort: 3306
@@ -49,6 +49,11 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.mariadb.storage.enabled }}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: data
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -60,5 +65,18 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-{{- end }}
+    {{- end }}
+  {{- if .Values.mariadb.storage.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: {{ .Values.mariadb.storage.storageClass }}
+        volumeMode: Filesystem
+  {{- end }}
 {{- end }}

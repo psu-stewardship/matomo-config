@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: harbor.dsrd.libraries.psu/library/matomo
+  repository: harbor.dsrd.libraries.psu.edu/library/matomo
   tag: 7
   pullPolicy: IfNotPresent
 
@@ -31,6 +31,11 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+persistence:
+  enabled: true
+  size: 8Gi
+  storageClass: nfs-client
+
 mariadb:
   enabled: true
   user: matomo
@@ -39,6 +44,9 @@ mariadb:
   rootPassword: matomo
   image: mariadb
   imageTag: 10.4.11
+  storage:
+    enabled: true
+    storageClass: nfs-client
 
 service:
   type: ClusterIP
@@ -50,7 +58,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: helm.chart.local
+    - host: matomo-workshop.dsrd.libraries.psu.edu
       paths: 
         - /
   tls: []
