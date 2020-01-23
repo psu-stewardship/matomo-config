@@ -1,17 +1,25 @@
-
+# set environment
+```
 export NAME=matomo
+```
 
 
 # new chart 
+```
 helm init ${NAME}
+```
 
 
 # template out the chart
-helm template ${NAME} . 
+```
+helm template ${NAME} .
+```
 
 
 # apply the template into your namespace
-helm template matomo . | kubectl apply -f - 
+```
+helm template matomo . | kubectl apply -f -
+```
 
 
 # common tasks
