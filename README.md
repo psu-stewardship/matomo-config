@@ -1,6 +1,7 @@
 # set environment
 ```
 export NAME=matomo
+kubens matomo
 ```
 
 
