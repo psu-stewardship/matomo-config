@@ -38,6 +38,14 @@ example:
 kubectl port-forward matomo-mariadb-0 3306:3306  # forward 3306 on mariadb
 ```
 
+# start from scratch
+```
+helm template matomo . | kubectl delete -f -
+kubectl get pvc
+kubectl get pods
+kubectl get statefulset
+kubectl delete pvc data-matomo-mariadb-0
+```
 
 kubectl port-forward {{ pod }} 3306:3306
 
