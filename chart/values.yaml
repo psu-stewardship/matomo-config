@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: harbor.dsrd.libraries.psu.edu/library/matomo
-  tag: 7
+  tag: 17
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
