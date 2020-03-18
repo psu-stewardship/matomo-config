@@ -62,6 +62,14 @@ kubectl delete pvc data-matomo-mariadb-0
 ```
 
 
+# changes to container
+```
+docker login harbor.dsrd.libraries.psu.edu
+docker build -t harbor.dsrd.libraries.psu.edu/library/matomo:version .
+docker push  harbor.dsrd.libraries.psu.edu/library/matomo:version
+```
+
+
 # TODO 
 [] put plugins and data into a pvc (mounted at /data)
 [] inject bootstrap.php from a configmap into /var/www/html
